@@ -22,9 +22,9 @@ const flightService = {
   },
 
   async fetchOffers(queryParams = {}) {
-    const { id, limit = LIMIT } = queryParams;
+    const { id, limit = LIMIT, before = "", after = "" } = queryParams;
     const response = await axiosInstance.get(
-      `/air/offers?offer_request_id=${id}&limit=${limit}`
+      `/air/offers?offer_request_id=${id}&limit=${limit}&before=${before}&after=${after}`
     );
 
     return { id, ...response.data };
