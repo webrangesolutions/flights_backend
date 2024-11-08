@@ -56,7 +56,7 @@ const flightService = {
     this.resetOfferTimer(id);
 
     const {
-      cabin_class = "",
+      cabin_classes = [],
       base_amount = [],
       stops = [],
       airlines = [],
@@ -70,11 +70,11 @@ const flightService = {
       let filteredOffers = this.offers.get(id)?.filter((offer) => {
         // Cabin class filter
         const cabinClassMatch =
-          !cabin_class ||
+          cabin_classes.length === 0 ||
           offer.slices.some((slice) =>
             slice.segments.some((segment) =>
-              segment.passengers.some(
-                (passenger) => passenger.cabin_class === cabin_class
+              segment.passengers.some((passenger) =>
+                cabin_classes.includes(passenger.cabin_class)
               )
             )
           );
