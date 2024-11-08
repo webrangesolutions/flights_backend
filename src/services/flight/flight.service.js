@@ -4,6 +4,7 @@ import { LIMIT } from "../../libs/constants.js";
 
 const flightService = {
   offers: new Map(),
+  prices: new Map(),
   offerTimers: new Map(),
   async createOfferRequest(offerData) {
     const requestData = { data: offerData };
@@ -18,6 +19,14 @@ const flightService = {
     return requestId
       ? await this.fetchOffers({}, { id: requestId, limit: LIMIT, page: 1 })
       : null;
+  },
+
+  getMinMaxPrices(offers) {
+    const prices = offers.map((offer) => +offer.base_amount);
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+
+    return [minPrice, maxPrice];
   },
 
   async getOffersList(offerData, queryParams = {}) {
@@ -45,6 +54,8 @@ const flightService = {
         break;
       }
     }
+
+    this.prices.set(id, this.getMinMaxPrices(this.offers.get(id)));
   },
 
   async fetchOffers(offerData = {}, queryParams = {}) {
@@ -131,6 +142,8 @@ const flightService = {
           totalPages: Math.ceil(filteredOffers.length / limitInt),
           currentPage: pageInt,
           id: id,
+          minPrice: this.prices.get(id)[0],
+          maxPrice: this.prices.get(id)[1],
         },
         data: paginatedData,
       };
