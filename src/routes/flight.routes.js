@@ -10,6 +10,6 @@ flightRouter.post(
   errorHandler(flightController.createOfferRequest)
 );
 
-flightRouter.get("/list", errorHandler(flightController.getOffers));
+flightRouter.post("/list", errorHandler(flightController.getOffers));
 
 export default flightRouter;
