@@ -3,6 +3,8 @@ export const errorHandler = (controller) => {
     try {
       await controller(req, res, next);
     } catch (err) {
+      console.log("error: ", err.response.data);
+
       next(err);
     }
   };
