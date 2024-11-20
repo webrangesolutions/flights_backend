@@ -16,7 +16,18 @@ export class App {
   }
 
   initMiddleware() {
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        origin: [
+          "http://localhost:3000",
+          "http://localhost:8000",
+          "https://go2-travel.vercel.app",
+        ],
+        methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+      })
+    );
     this.app.use(express.json());
   }
 
